@@ -1,0 +1,16 @@
+{
+  "files": [],
+  "compilerOptions": {
+    /* 自定义路径*/
+    "baseUrl": "./",
+    "paths": {
+      "@": ["src"],
+      "@/*": ["src/*"],
+      "@images/*": ["images/*"],
+    }
+  },
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
+}
