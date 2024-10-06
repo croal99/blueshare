@@ -17,3 +17,15 @@
 .main-button {
     @apply text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800
 }
+
+.pt-20 {
+    padding-top: 3.8rem;
+}
+
+.side-bar {
+    @apply fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700
+}
+
+.top-bar {
+    @apply fixed top-0 z-50 w-full border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700
+}

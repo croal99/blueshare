@@ -3,6 +3,7 @@ import { useAuth } from "../provider/authProvider";
 
 export const ProtectedRoute = () => {
     const { token } = useAuth();
+    console.log('ProtectedRoute')
 
     // 判断用户是否有权限
     if (!token) {

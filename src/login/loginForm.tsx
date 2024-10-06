@@ -22,6 +22,9 @@ export default function LoginForm() {
             handleSignIn(code).then(() => {
                 navigate("/")
                 // console.log('oath google')
+            }).catch(err => {
+                console.log('sign in error', err)
+                navigate("/")
             })
         }
 

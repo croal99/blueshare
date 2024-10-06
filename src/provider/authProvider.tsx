@@ -1,4 +1,3 @@
-import axios from "axios";
 import {
     createContext,
     useContext,
@@ -7,7 +6,7 @@ import {
     useState,
 } from "react";
 import Api from "../utils/api.ts";
-import {useNavigate} from "react-router-dom";
+import {IGoogleUserInfo, IUserInfo} from "../types/IUserInfo.ts";
 
 const AuthContext = createContext();
 
@@ -49,7 +48,8 @@ export const useAuth = () => {
             code,
         })
 
-        setToken(res.rawData?.token)
+        // console.log('sign in', res, res.data, res.data?.token)
+        setToken(res.rawData.token)
 
         return true
     }
@@ -60,8 +60,17 @@ export const useAuth = () => {
 
     const getUserInfo = async () => {
         const res = await Api.get("user/profile")
-        console.log('get user info', res)
-        return
+        const googleUserInfo = res.data as IGoogleUserInfo;
+        const userInfo : IUserInfo = {
+            id: googleUserInfo.id,
+            name: googleUserInfo.name,
+            nickname: googleUserInfo.given_name,
+            email: googleUserInfo.email,
+            picture: googleUserInfo.picture,
+        }
+        // console.log('get user info', (res.data as IGoogleUserInfo))
+
+        return userInfo
     }
 
     return {

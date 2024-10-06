@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 export default function LoginGoogle(
     {code}
 ) {
-    const [isLoad, setIsLoad] = useState(false);
+    const [isLoad, setIsLoad] = useState(code !== null);
 
     const handleLogin = async () => {
         setIsLoad(true);
@@ -25,14 +25,13 @@ export default function LoginGoogle(
                             Welcome, please sign in to continue.
                         </p>
                         <div className="items-center justify-center space-y-4 sm:flex sm:space-x-4 sm:space-y-0">
-                            {code ?
+                            {isLoad ?
                                 <div
                                     className="flex w-full items-center justify-center rounded-lg bg-gray-800 px-4 py-2.5 gap-3 text-white">
                                     <Spinner aria-label="Default status example"/>
-                                    <div className="-mt-1 font-sans text-xl font-semibold">Loading</div>
+                                    <div className="-mt-1 font-sans text-base font-semibold">Loading</div>
                                 </div> :
                                 <button
-                                    disabled={isLoad}
                                     onClick={handleLogin}
                                     className="flex w-full items-center justify-center rounded-lg bg-gray-800 px-4 py-2.5 text-white"
                                 >
@@ -55,7 +54,7 @@ export default function LoginGoogle(
                                             d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0 79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251"
                                             fill="#EB4335"/>
                                     </svg>
-                                    <div className="-mt-1 font-sans text-xl font-semibold">Sign In With Google</div>
+                                    <div className="-mt-1 font-sans text-base font-semibold">Sign In With Google</div>
                                 </button>}
 
                         </div>

@@ -1,18 +1,19 @@
 import {RouterProvider, createBrowserRouter, useNavigate, redirect} from "react-router-dom";
 import {useAuth} from "../provider/authProvider";
 import {ProtectedRoute} from "./ProtectedRoute";
-import LoginGoogle from "../login/loginGoogle.tsx";
 import LoginForm from "../login/loginForm.tsx";
 import {Button} from "flowbite-react";
-import Api from "../utils/api.ts";
-// import Login from "../pages/Login";
-// import Logout from "../pages/Logout";
+import Layout from "../layout/layout.tsx";
 
 const Routes = () => {
     const {token} = useAuth();
 
     // 路由配置
     const routesForPublic = [
+        {
+            path: "/login",
+            element: <LoginForm/>,
+        },
         {
             path: "/service",
             element: <div>Service Page</div>,
@@ -26,7 +27,7 @@ const Routes = () => {
     const routesForAuthenticatedOnly = [
         {
             path: "/",
-            element: <ProtectedRoute/>,
+            element: <Layout/>,
             children: [
                 {
                     path: "/",
@@ -50,10 +51,6 @@ const Routes = () => {
     const routesForNotAuthenticatedOnly = [
         {
             path: "/",
-            element: <LoginForm/>,
-        },
-        {
-            path: "/login",
             element: <LoginForm/>,
         },
     ];
