@@ -18,7 +18,16 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    /* 自定义路径*/
+    "baseUrl": "./",
+    "paths": {
+      "@": ["src"],
+      "@/*": ["src/*"],
+      "@components/*": ["src/components/*"],
+      "@images/*": ["images/*"],
+      }
   },
-  "include": ["src"]
+  "include": ["src", "src/**/*.ts", "src/**/*.tsx"]
 }

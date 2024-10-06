@@ -1,19 +1,15 @@
 import {Avatar, Button, Dropdown, Navbar} from "flowbite-react";
 import {Link, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {useAuth} from "../provider/authProvider.tsx";
-import {IUserInfo} from "../types/IUserInfo.ts";
+import {useAuth} from "@/provider/authProvider.tsx";
+import {IUserInfo} from "@/types/IUserInfo.ts";
 
-export default function TopBar() {
-    const [profile, setProfile] = useState<IUserInfo>();
-    const {getUserInfo, handleSignOut} = useAuth()
+export default function TopBar(props: { profile: IUserInfo | undefined })
+{
+    const {handleSignOut} = useAuth()
     const navigate = useNavigate();
 
     useEffect(() => {
-        getUserInfo().then(res => {
-            // console.log('userinfo', res)
-            setProfile(res)
-        })
     }, [])
 
     return (
@@ -49,13 +45,13 @@ export default function TopBar() {
             </Navbar.Brand>
             <div className="flex md:order-2 gap-2">
                 <Dropdown
-                    label={<Avatar alt="User settings" img={profile?.picture} rounded/>}
+                    label={<Avatar alt="User settings" img={props.profile?.picture} rounded/>}
                     arrowIcon={false}
                     inline
                 >
                     <Dropdown.Header>
-                        <span className="block text-sm">{profile?.name}</span>
-                        <span className="block truncate text-sm font-medium">{profile?.email}</span>
+                        <span className="block text-sm">{props.profile?.name}</span>
+                        <span className="block truncate text-sm font-medium">{props.profile?.email}</span>
                     </Dropdown.Header>
                     <Dropdown.Item
                         onClick={async () => {

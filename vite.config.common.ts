@@ -2,7 +2,9 @@ import react from "@vitejs/plugin-react-swc";
 import path, {resolve} from "path";
 
 export default {
-    plugins: [react()],
+    plugins: [
+        react(),
+    ],
     server: {
         host: '0.0.0.0',
         port: 8000,
@@ -21,6 +23,7 @@ export default {
     resolve: {
         alias: {
             '@': path.resolve(__dirname, './src'),
+            '@components': path.resolve(__dirname, './src/components'),
             '@images': path.resolve(__dirname, './public/images'),
             '@style': path.resolve(__dirname, './src/style'),
         }

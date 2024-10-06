@@ -1,9 +1,10 @@
 import {RouterProvider, createBrowserRouter, useNavigate, redirect} from "react-router-dom";
-import {useAuth} from "../provider/authProvider";
-import {ProtectedRoute} from "./ProtectedRoute";
-import LoginForm from "../login/loginForm.tsx";
 import {Button} from "flowbite-react";
-import Layout from "../layout/layout.tsx";
+import {useAuth} from "@/provider/authProvider";
+import Layout from "@/layout/layout.tsx";
+import LoginForm from "@components/login/loginForm.tsx";
+import Home from "@components/home/home.tsx";
+import UserProfile from "@components/home/userProfile.tsx";
 
 const Routes = () => {
     const {token} = useAuth();
@@ -30,12 +31,16 @@ const Routes = () => {
             element: <Layout/>,
             children: [
                 {
-                    path: "/",
-                    element: <TestForm/>,
+                    index: true,
+                    element: <div>User Home</div>,
+                },
+                {
+                    path: "/home",
+                    element: <Home />,
                 },
                 {
                     path: "/profile",
-                    element: <div>User Profile</div>,
+                    element: <UserProfile />,
                 },
                 // {
                 //     path: "/logout",

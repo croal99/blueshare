@@ -1,36 +1,46 @@
-import {Sidebar} from "flowbite-react";
-import {HiArrowSmRight, HiChartPie, HiInbox, HiShoppingBag, HiTable, HiUser, HiViewBoards} from "react-icons/hi";
+import {HiUsers, HiHome, HiLogout} from "react-icons/hi";
+import {useAuth} from "../provider/authProvider.tsx";
+import {Link, useNavigate} from "react-router-dom";
 
 export default function LeftBar() {
+    const {handleSignOut} = useAuth()
+    const navigate = useNavigate();
+
     return (
         <>
-            <Sidebar>
-                <Sidebar.Items>
-                    <Sidebar.ItemGroup>
-                        <Sidebar.Item href="#" icon={HiChartPie}>
-                            Dashboard
-                        </Sidebar.Item>
-                        <Sidebar.Item href="#" icon={HiViewBoards} label="Pro" labelColor="dark">
-                            Kanban
-                        </Sidebar.Item>
-                        <Sidebar.Item href="#" icon={HiInbox} label="3">
-                            Inbox
-                        </Sidebar.Item>
-                        <Sidebar.Item href="#" icon={HiUser}>
-                            Users
-                        </Sidebar.Item>
-                        <Sidebar.Item href="#" icon={HiShoppingBag}>
-                            Products
-                        </Sidebar.Item>
-                        <Sidebar.Item href="#" icon={HiArrowSmRight}>
-                            Sign In
-                        </Sidebar.Item>
-                        <Sidebar.Item href="#" icon={HiTable}>
-                            Sign Up
-                        </Sidebar.Item>
-                    </Sidebar.ItemGroup>
-                </Sidebar.Items>
-            </Sidebar>
+            <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+                <ul className="space-y-2 font-medium">
+                    <li>
+                        <div className="side-bar-item group">
+                            <HiHome size="32" />
+
+                            <Link to="/home" className="ms-3 w-full">Home</Link>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div className="side-bar-item group">
+                            <HiUsers size="32" />
+                            <Link to="/profile" className="ms-3 w-full">User</Link>
+                        </div>
+                    </li>
+
+                    <li>
+                        <div className="side-bar-item group">
+                            <HiLogout size="32" />
+
+                            <Link to="/login"
+                                className="ms-3 w-full"
+                                onClick={async () => {
+                                    await handleSignOut();
+                                    // navigate("/login")
+                                }}
+                            >Sign out</Link>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
         </>
     )
 }

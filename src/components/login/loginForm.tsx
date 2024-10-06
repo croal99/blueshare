@@ -1,11 +1,9 @@
 import {useNavigate, useSearchParams} from "react-router-dom";
-import {useAuth} from "@/provider/authProvider.tsx";
 import {useEffect} from "react";
-import LoginUser from "./loginUser.tsx";
-import LoginGoogle from "./loginGoogle.tsx";
-import {apiAuthProvider} from "../hooks/useAuthStauts.ts";
 import {Button} from "flowbite-react";
 import toast, {Toaster} from "react-hot-toast";
+import {useAuth} from "@/provider/authProvider.tsx";
+import LoginGoogle from "./loginGoogle.tsx";
 
 const loginType = 1;
 

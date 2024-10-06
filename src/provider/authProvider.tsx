@@ -5,8 +5,8 @@ import {
     useMemo,
     useState,
 } from "react";
-import Api from "../utils/api.ts";
-import {IGoogleUserInfo, IUserInfo} from "../types/IUserInfo.ts";
+import Api from "@/utils/api.ts";
+import {IGoogleUserInfo, IUserInfo} from "@/types/IUserInfo.ts";
 
 const AuthContext = createContext();
 
