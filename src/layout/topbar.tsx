@@ -19,14 +19,17 @@ export default function TopBar() {
     return (
         <Navbar fluid className="bg-gradient-to-r from-blue-500 to-teal-500 text-white">
             <Navbar.Brand href="https://www.blueshare.xyz" className="gap-2">
-                <svg width="32px" height="32px" viewBox="0 0 1024 1024" className="icon" version="1.1"
-                     xmlns="http://www.w3.org/2000/svg" fill="#000000">
-                    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                <svg width="32px" height="32px" viewBox="-92.16 -92.16 1208.32 1208.32" className="icon" version="1.1"
+                     xmlns="http://www.w3.org/2000/svg" fill="#000000" stroke="#000000">
+                    <g id="SVGRepo_bgCarrier" strokeWidth="0">
+                        <rect x="-92.16" y="-92.16" width="1208.32" height="1208.32" rx="604.16" fill="#ffffff"
+                              strokeWidth="0"></rect>
+                    </g>
                     <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
                     <g id="SVGRepo_iconCarrier">
                         <path
                             d="M877.387 523.945c-1.663 198.958-163.571 360.868-362.532 362.531-198.991 1.661-360.885-166.07-362.526-362.531-0.697-83.354-130.015-83.42-129.318 0 1.064 127.401 49.851 247.752 136.97 340.531 86.427 92.047 208.144 143.457 333.116 150.77 127.267 7.454 251.374-40.885 347.279-122.774 96.086-82.04 150.659-201.304 164.166-325.296 1.565-14.352 2.04-28.805 2.16-43.23 0.697-83.421-128.618-83.355-129.315-0.001z"
-                            fill="#4A5699"></path>
+                            fill="#75f024"></path>
                         <path
                             d="M152.329 500.646c1.662-198.965 163.563-360.875 362.526-362.537 83.354-0.697 83.419-130.013 0-129.317-129.524 1.081-252.396 51.567-345.385 141.68C75.465 241.564 24.097 370.538 23.011 500.646c-0.697 83.421 128.62 83.349 129.318 0z"
                             fill="#C45FA0"></path>
@@ -46,7 +49,7 @@ export default function TopBar() {
             </Navbar.Brand>
             <div className="flex md:order-2 gap-2">
                 <Dropdown
-                    label={<Avatar alt="User settings" img={profile?.picture} rounded />}
+                    label={<Avatar alt="User settings" img={profile?.picture} rounded/>}
                     arrowIcon={false}
                     inline
                 >
