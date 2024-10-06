@@ -1,6 +1,6 @@
 import TopBar from "./topbar.tsx";
 import LeftBar from "./leftbar.tsx";
-import {Outlet, useNavigate} from "react-router-dom";
+import {Outlet, useNavigate, useOutletContext} from "react-router-dom";
 import {useAuth} from "@/provider/authProvider.tsx";
 import {useEffect, useState} from "react";
 import {IUserInfo} from "@/types/IUserInfo.ts";
@@ -33,7 +33,7 @@ export default function Layout() {
             </aside>
 
             <div className="p-4 sm:ml-64">
-                <Outlet />
+                <Outlet context={[profile]} />
             </div>
         </>
     )
