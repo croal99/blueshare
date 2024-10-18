@@ -8,7 +8,7 @@ import {
 import Api from "@/utils/api.ts";
 import {IGoogleUserInfo, IUserInfo} from "@/types/IUserInfo.ts";
 
-const AuthContext = createContext();
+const AuthContext = createContext(null);
 
 const AuthProvider = ({children}) => {
     const [token, setToken] = useState(localStorage.getItem("token"));

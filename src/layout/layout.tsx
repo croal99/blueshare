@@ -4,10 +4,11 @@ import {Outlet, useNavigate, useOutletContext} from "react-router-dom";
 import {useAuth} from "@/provider/authProvider.tsx";
 import {useEffect, useState} from "react";
 import {IUserInfo} from "@/types/IUserInfo.ts";
+import {Toaster} from "react-hot-toast";
 
 export default function Layout() {
     const [profile, setProfile] = useState<IUserInfo>();
-    const {getUserInfo, handleSignOut} = useAuth()
+    const {getUserInfo} = useAuth()
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -22,6 +23,7 @@ export default function Layout() {
 
     return (
         <>
+            <Toaster />
             <nav className="top-bar" aria-label="Topbar">
                 <TopBar
                     profile={profile}
