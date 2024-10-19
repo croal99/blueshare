@@ -34,7 +34,11 @@
     @apply fixed top-0 z-50 w-full border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700
 }
 
-.main-container
+.main-container-border
 {
     @apply p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14
+}
+.main-container
+{
+    @apply p-4 rounded-lg dark:border-gray-700 mt-14
 }

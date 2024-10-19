@@ -1,53 +1,40 @@
-import {Blockquote, Box, Button, Card, Dialog, Flex, Progress, Spinner, Strong, Text} from "@radix-ui/themes";
-import {Form} from "react-router-dom";
-import React, {useEffect, useState} from "react";
-import {getSetting} from "@/hooks/useLocalStore.ts";
-import {IBlobOnWalrus, NewBlobOnWalrus} from "@/types/IBlobOnWalrus.ts";
-import {IFileOnStore} from "@/types/IFileOnStore.ts";
-import {createFile, EncryptBlobFile, NewShareFile, UpdateShareFile, UploadShareFile} from "@/hooks/useFileStore.ts";
-import axios from 'axios';
+import {Button, Card, Dialog, Flex, Progress, Spinner, Strong, Text} from "@radix-ui/themes";
+import React, {useState} from "react";
+import {EncryptBlobFile, NewShareFile, UploadShareFile} from "@/hooks/useFileStore.ts";
 import {toast} from "react-hot-toast";
-import { FileInput, Label } from "flowbite-react";
+import {FileInput, Label} from "flowbite-react";
 
-// import "@/styles/toast.css";
-
-
-export default function UploadFile(
-    {
-        root,
-        reFetchDir,
-        uploadStep,
-    }) {
+export default function UploadFile() {
     const [file, setFile] = useState();
     const [step, setStep] = useState(0);
     const [uploadProgress, setUploadProgress] = useState(0);
     const [isError, setIsError] = React.useState(false);
-    const [isWarning, setIsWarning] = React.useState(false);
-    const [message, setMessage] = React.useState("");
 
     const handleSubmit = async () => {
-        try {
-            const fileInfo = await NewShareFile();
+        const fileInfo = await NewShareFile();
 
-            fileInfo.name = file.name;
-            fileInfo.media_type = file.type;
-            fileInfo.icon = "pdf";
-            fileInfo.size = file.size;
-            fileInfo.password = Math.random().toString(36).substring(2, 12);
+        fileInfo.name = file.name;
+        fileInfo.media_type = file.type;
+        fileInfo.icon = "pdf";
+        fileInfo.size = file.size;
+        fileInfo.password = Math.random().toString(36).substring(2, 12);
 
-            // console.log("pre encrypt", fileInfo);
-            setUploadProgress(0);
+        // console.log("pre encrypt", fileInfo);
+        setUploadProgress(0);
 
-            toast.loading('encrypt...')
-            const cryptData = await EncryptBlobFile(file, fileInfo);
-            if (!cryptData) {
-                setUploadProgress(0);
-                setStep(0);
-                return
-            }
-            await new Promise((r) => setTimeout(r, 1000)); // fake delay
+        toast.loading('encrypt...')
+        const cryptData = await EncryptBlobFile(file, fileInfo);
+        await new Promise((r) => setTimeout(r, 1000)); // fake delay
+        if (!cryptData) {
+            // 原则上不会进入错误
             toast.dismiss();
+            setUploadProgress(0);
+            setStep(0);
+            return
+        }
+        toast.dismiss();
 
+        try {
             // 准备上传
             setStep(2);
             const config = {
@@ -61,24 +48,13 @@ export default function UploadFile(
             };
 
             await UploadShareFile(cryptData, fileInfo, config);
-
-            // UI
-            setUploadProgress(0);
-            setStep(0);
         } catch (err) {
-            setUploadProgress(0);
-            setStep(0);
-            toast.error('Please check your network configuration and make sure the Walrus service address is correct.');
             setIsError(true)
         }
+
+        setUploadProgress(0);
+        setStep(0);
     }
-
-    useEffect(() => {
-        setStep(uploadStep)
-
-        return () => {
-        }
-    }, [uploadStep]);
 
     return (
         <>
@@ -96,10 +72,8 @@ export default function UploadFile(
                         <Text>
                             Blue Share uses javascript running within your web browser to encrypt and decrypt
                             files client-side, in-browser. This App makes no network connections during
-                            this
-                            process, to ensure that your keys never leave the web browser during
-                            the
-                            process.
+                            this process, to ensure that your keys never leave the web browser during
+                            the process.
                         </Text>
                         <Text>
                             All client-side cryptography is implemented using the Web Crypto API. Files
@@ -113,7 +87,7 @@ export default function UploadFile(
                             </div>
                             <FileInput
                                 helperText="PDF (MAX SIZE: 10MB)."
-                                onChange={e=>{
+                                onChange={e => {
                                     // console.log(e.target.files[0])
                                     setFile(e.target.files[0])
                                 }}
@@ -134,30 +108,26 @@ export default function UploadFile(
                     </Dialog.Description>
 
                     <Flex direction="column" gap="3">
-                        {isWarning ?
-                            <Card style={{background: 'var(--gray-a6)'}}>
-                                <Flex direction="column" gap="3">
-                                    <Text>
-                                        The Walrus system provides an interface that can be used for public testing. For
-                                        your
-                                        convenience, walrus provide these at the following hosts:
-                                    </Text>
-                                    <Text>
-                                        <Text weight="bold">Aggregator:</Text> https://aggregator-devnet.walrus.space
-                                    </Text>
-                                    <Text>
-                                        <Text weight="bold">Publisher:</Text> https://publisher-devnet.walrus.space
-                                    </Text>
-                                    <Text color="red">
-                                        Walrus publisher is currently limiting requests to <Strong>10 MiB</Strong>. If
-                                        you want
-                                        to upload larger
-                                        files, you need to run your own publisher.
-                                    </Text>
-                                </Flex>
-                            </Card> : null}
+                        <Card style={{background: 'var(--gray-a6)'}}>
+                            <Flex direction="column" gap="3">
+                                <Text>
+                                    The Walrus system provides an interface that can be used for public testing. For
+                                    your convenience, walrus provide these at the following hosts:
+                                </Text>
+                                <Text>
+                                    <Text weight="bold">Aggregator:</Text> https://aggregator-devnet.walrus.space
+                                </Text>
+                                <Text>
+                                    <Text weight="bold">Publisher:</Text> https://publisher-devnet.walrus.space
+                                </Text>
+                                <Text color="red">
+                                    Walrus publisher is currently limiting requests to <Strong>10 MiB</Strong>. If
+                                    you want to upload larger files, you need to order the Pro version.
+                                </Text>
+                            </Flex>
+                        </Card>
                         {uploadProgress < 100 ?
-                            <Progress value={uploadProgress} style={{height:'32px'}}></Progress> :
+                            <Progress value={uploadProgress} style={{height: '32px'}}></Progress> :
                             <Button>
                                 <Spinner loading></Spinner> Waiting Walrus response.
                             </Button>}
@@ -174,7 +144,7 @@ export default function UploadFile(
 
                     <Flex direction="column" gap="3">
                         <Text>
-                            {message}
+                            Please check your network configuration and make sure the Walrus service address is correct.
                         </Text>
 
                         <Flex gap="3" mt="4" justify="end">
