@@ -30,6 +30,12 @@ export const NewShareFile = async () => {
     return res.data as IFileOnStore;
 }
 
+export const DeleteShareFile = async (id: string) => {
+    const res = await Api.delete(`walrus/file/?id=${id}`);
+    // console.log(res);
+    return res.data as IFileOnStore;
+}
+
 export const UpdateShareFile = async (fileInfo: IFileOnStore) => {
     const res = await Api.post("walrus/file", fileInfo);
     // console.log(res);
@@ -150,8 +156,6 @@ export const EncryptBlobFile = async (file: Blob, fileInfo: IFileOnStore) => {
     return resultbytes;
 }
 
-// ------ File Api ------
-
 export async function getAllFiles() {
     const files: IFileOnStore[] | null = await localforage.getItem(KEY_FILE);
     if (files) {
@@ -190,6 +194,8 @@ export async function getChildFiles(parentId) {
     }
     return files;
 }
+
+// ------ File Api ------
 
 export async function getFilesByType(mediaType) {
     const files: IFileOnStore[] | null = await localforage.getItem(KEY_FILE);

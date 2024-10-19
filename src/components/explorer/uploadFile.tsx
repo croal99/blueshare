@@ -4,7 +4,7 @@ import {EncryptBlobFile, NewShareFile, UploadShareFile} from "@/hooks/useFileSto
 import {toast} from "react-hot-toast";
 import {FileInput, Label} from "flowbite-react";
 
-export default function UploadFile() {
+export default function UploadFile({onUpload}) {
     const [file, setFile] = useState();
     const [step, setStep] = useState(0);
     const [uploadProgress, setUploadProgress] = useState(0);
@@ -54,6 +54,11 @@ export default function UploadFile() {
 
         setUploadProgress(0);
         setStep(0);
+
+        // 上一级事件
+        if (onUpload) {
+            onUpload();
+        }
     }
 
     return (

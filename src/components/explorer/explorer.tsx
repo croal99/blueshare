@@ -15,13 +15,20 @@ import {
 } from "@radix-ui/themes";
 import UploadFile from "@components/explorer/uploadFile.tsx";
 import {useEffect, useState} from "react";
-import {getChildFiles} from "@/hooks/useFileStore.ts";
-import {IFileOnStore, IFolderOnStore} from "@/types/IFileOnStore.ts";
+import {DeleteShareFile, getChildFiles} from "@/hooks/useFileStore.ts";
+import {IFileOnStore} from "@/types/IFileOnStore.ts";
 import dayjs from "dayjs";
 import {humanFileSize} from "@/utils/formatSize.ts";
+import toast from "react-hot-toast";
 
 export default function Explorer() {
     const [fileList, setFileList] = useState<IFileOnStore[]>([]);
+
+    const handleDeleteFile = async (file: IFileOnStore) => {
+        await DeleteShareFile(file.id);
+        toast.success("File successfully deleted.");
+        await fetchData();
+    }
 
     const fetchData = async () => {
         const list = await getChildFiles("");
@@ -39,7 +46,9 @@ export default function Explorer() {
             <div className="main-container">
                 <div className="grid grid-cols-1 gap-3 mb-4">
                     <div className="flex justify-end gap-3">
-                        <UploadFile />
+                        <UploadFile
+                            onUpload={fetchData}
+                        />
                     </div>
                     <Card style={{background: 'var(--gray-a6)'}}>
                         <Table.Root>
@@ -93,15 +102,16 @@ export default function Explorer() {
                                                                 </Button>
                                                             </Dialog.Close>
                                                             <Dialog.Close>
-                                                                <Button color="red"
-                                                                        onClick={() => removeFile(item)}>
+                                                                <Button
+                                                                    color="red"
+                                                                    onClick={() => handleDeleteFile(item)}
+                                                                >
                                                                     Delete
                                                                 </Button>
                                                             </Dialog.Close>
                                                         </Flex>
                                                     </Dialog.Content>
                                                 </Dialog.Root>
-
 
 
                                             </Flex>
