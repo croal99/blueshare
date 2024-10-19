@@ -18,6 +18,7 @@ export default function UploadFile({onUpload}) {
         fileInfo.icon = "pdf";
         fileInfo.size = file.size;
         fileInfo.password = Math.random().toString(36).substring(2, 12);
+        fileInfo.salt = fileInfo.id.substring(0, 8);
 
         // console.log("pre encrypt", fileInfo);
         setUploadProgress(0);

@@ -9,10 +9,6 @@ import axios, {AxiosRequestConfig} from "axios";
 const KEY_FILE = "files";
 const iconType = ["image", "pdf", "zip", "video", "audio"];
 const iconFile = ["image.png", "pdf.png", "zip.png", "video.png", "audio.png"];
-const setting = {
-    aggregator: "https://aggregator-devnet.walrus.space",
-    publisher: "https://publisher-devnet.walrus.space",
-}
 
 const readfile = (file: Blob ) => {
     return new Promise((resolve, reject) => {
@@ -22,6 +18,11 @@ const readfile = (file: Blob ) => {
         };
         fr.readAsArrayBuffer(file);
     });
+}
+
+export const WALRUS_SETTING = {
+    aggregator: "https://aggregator-devnet.walrus.space",
+    publisher: "https://publisher-devnet.walrus.space",
 }
 
 export const NewShareFile = async () => {
@@ -42,7 +43,7 @@ export const UpdateShareFile = async (fileInfo: IFileOnStore) => {
 }
 
 export const UploadShareFile = (data: Uint8Array, fileInfo: IFileOnStore, config: AxiosRequestConfig) => {
-    const publisherUrl = `${setting.publisher}/v1/store?epochs=1`;
+    const publisherUrl = `${WALRUS_SETTING.publisher}/v1/store?epochs=1`;
 
     return new Promise((resolve, reject) => {
         axios.put(publisherUrl, data, config).then(response => {
@@ -75,11 +76,11 @@ export const UploadShareFile = (data: Uint8Array, fileInfo: IFileOnStore, config
 }
 
 export const EncryptBlobFile = async (file: Blob, fileInfo: IFileOnStore) => {
-    // console.log(file);
-    if (file.type.indexOf('pdf') == -1) {
-        toast.error('This file is not a PDF file.');
-        return false;
-    }
+    // console.log(fileInfo);
+    // if (file.type.indexOf('pdf') == -1) {
+    //     toast.error('This file is not a PDF file.');
+    //     return false;
+    // }
 
     const blob = await readfile(file).catch(function (err) {
         toast.error(err);
@@ -148,10 +149,10 @@ export const EncryptBlobFile = async (file: Blob, fileInfo: IFileOnStore) => {
     });
 
     cipherbytes = new Uint8Array(cipherbytes);
-    const resultbytes = new Uint8Array(cipherbytes.length + 16);
-    resultbytes.set(new TextEncoder().encode('Salted__'));
-    resultbytes.set(pbkdf2salt, 8);
-    resultbytes.set(cipherbytes, 16);
+    const resultbytes = new Uint8Array(cipherbytes.length + 18);
+    resultbytes.set(new TextEncoder().encode('BlueShare_'));
+    resultbytes.set(pbkdf2salt, 10);
+    resultbytes.set(cipherbytes, 18);
 
     return resultbytes;
 }

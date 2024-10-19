@@ -1,17 +1,11 @@
 import {
-    Box,
     Button,
     Card,
     Flex,
     Text,
     Dialog,
-    TextField,
     Table,
-    Inset,
     Strong,
-    Spinner,
-    Select,
-    Grid, Radio, Badge, Code
 } from "@radix-ui/themes";
 import UploadFile from "@components/explorer/uploadFile.tsx";
 import {useEffect, useState} from "react";
@@ -20,6 +14,8 @@ import {IFileOnStore} from "@/types/IFileOnStore.ts";
 import dayjs from "dayjs";
 import {humanFileSize} from "@/utils/formatSize.ts";
 import toast from "react-hot-toast";
+import Detail from "@components/explorer/detail.tsx";
+import Share from "@components/explorer/share.tsx";
 
 export default function Explorer() {
     const [fileList, setFileList] = useState<IFileOnStore[]>([]);
@@ -113,7 +109,12 @@ export default function Explorer() {
                                                     </Dialog.Content>
                                                 </Dialog.Root>
 
+                                                <Detail
+                                                    walrusFile={item}
+                                                />
 
+                                                <Share
+                                                    />
                                             </Flex>
 
 
