@@ -1,11 +1,10 @@
-import {RouterProvider, createBrowserRouter, useNavigate} from "react-router-dom";
-import {Button} from "flowbite-react";
+import {RouterProvider, createBrowserRouter, useNavigate, createHashRouter} from "react-router-dom";
 import {useAuth} from "@/provider/authProvider";
 import Layout from "@/layout/layout.tsx";
 import LoginForm from "@components/login/loginForm.tsx";
-import Home from "@components/home/home.tsx";
 import UserProfile from "@components/home/userProfile.tsx";
 import Explorer from "@components/explorer/explorer.tsx";
+import View, {loader as viewLoader} from "@/components/view/view.tsx";
 
 const Routes = () => {
     const {token} = useAuth();
@@ -13,16 +12,17 @@ const Routes = () => {
     // 路由配置
     const routesForPublic = [
         {
+            path: "/",
+            element: <LoginForm/>,
+        },
+        {
             path: "/login",
             element: <LoginForm/>,
         },
         {
-            path: "/service",
-            element: <div>Service Page</div>,
-        },
-        {
-            path: "/about-us",
-            element: <div>About Us</div>,
+            path: "/view/:handle/:id",
+            element: <View/>,
+            loader: viewLoader,
         },
     ];
 
@@ -55,46 +55,20 @@ const Routes = () => {
         //     element: <LoginForm/>,
         // },
     ];
+
     const routesForNotAuthenticatedOnly = [
-        {
-            path: "/",
-            element: <LoginForm/>,
-        },
     ];
 
     const router = createBrowserRouter([
+    // const router = createHashRouter([
         ...routesForPublic,
-        ...(!token ? routesForNotAuthenticatedOnly : []),
+        // ...(!token ? routesForNotAuthenticatedOnly : []),
         ...routesForAuthenticatedOnly,
     ]);
 
     return <RouterProvider router={router}/>;
 
 };
-
-function TestForm() {
-    const { handleSignOut, getUserInfo} = useAuth();
-    const navigate = useNavigate();
-
-    const handleUserInfo = () => {
-        getUserInfo().then()
-    }
-
-    return (
-        <>
-            <Button onClick={handleUserInfo}>UserInfo</Button>
-            <Button
-                onClick={async ()=>{
-                    await handleSignOut();
-                    navigate("/login")
-                }}
-            >
-                SignOut
-            </Button>
-        </>
-    )
-}
-
 
 export default Routes;
 

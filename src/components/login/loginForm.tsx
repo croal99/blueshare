@@ -5,12 +5,13 @@ import toast, {Toaster} from "react-hot-toast";
 import {useAuth} from "@/provider/authProvider.tsx";
 import LoginGoogle from "./loginGoogle.tsx";
 
-const loginType = 1;
+const loginType = 2;
 
 export default function LoginForm() {
     const navigate = useNavigate();
     const [parmas] = useSearchParams()
     const code = parmas.get('code')
+    console.log('code', code, parmas)
 
     const {handleSignIn} = useAuth()
 
@@ -28,7 +29,7 @@ export default function LoginForm() {
 
     }, []);
 
-    if (loginType === 10) {
+    if (loginType === 1) {
         return (
             <>
                 <Toaster/>

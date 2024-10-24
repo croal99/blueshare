@@ -60,17 +60,17 @@ export const useAuth = () => {
 
     const getUserInfo = async () => {
         const res = await Api.get("user/profile")
-        const googleUserInfo = res.data as IGoogleUserInfo;
-        const userInfo : IUserInfo = {
-            id: googleUserInfo.id,
-            name: googleUserInfo.name,
-            nickname: googleUserInfo.given_name,
-            email: googleUserInfo.email,
-            picture: googleUserInfo.picture,
-        }
+        // const googleUserInfo = res.data as IGoogleUserInfo;
+        // const userInfo : IUserInfo = {
+        //     id: googleUserInfo.id,
+        //     name: googleUserInfo.name,
+        //     nickname: googleUserInfo.given_name,
+        //     email: googleUserInfo.email,
+        //     picture: googleUserInfo.picture,
+        // }
         // console.log('get user info', (res.data as IGoogleUserInfo))
 
-        return userInfo
+        return res.data as IUserInfo;
     }
 
     return {

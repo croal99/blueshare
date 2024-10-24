@@ -1,9 +1,7 @@
 import {Card, Spinner} from "flowbite-react";
 import {useEffect, useState} from "react";
 
-export default function LoginGoogle(
-    {code}
-) {
+export default function LoginGoogle({code}: { code: string }) {
     const [isLoad, setIsLoad] = useState(code !== null);
 
     const handleLogin = async () => {

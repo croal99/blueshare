@@ -10,7 +10,7 @@ const KEY_FILE = "files";
 const iconType = ["image", "pdf", "zip", "video", "audio"];
 const iconFile = ["image.png", "pdf.png", "zip.png", "video.png", "audio.png"];
 
-const readfile = (file: Blob ) => {
+const readfile = (file: Blob) => {
     return new Promise((resolve, reject) => {
         const fr = new FileReader();
         fr.onload = () => {
@@ -27,6 +27,12 @@ export const WALRUS_SETTING = {
 
 export const NewShareFile = async () => {
     const res = await Api.get("walrus/new");
+    // console.log(res);
+    return res.data as IFileOnStore;
+}
+
+export const GetShareFile = async (id: string) => {
+    const res = await Api.get(`walrus/file/?id=${id}`);
     // console.log(res);
     return res.data as IFileOnStore;
 }
@@ -157,6 +163,64 @@ export const EncryptBlobFile = async (file: Blob, fileInfo: IFileOnStore) => {
     return resultbytes;
 }
 
+export const DecryptBlob = async (data: Blob, fileInfo: IFileOnStore) => {
+    let cipherbytes = new Uint8Array(data);
+
+    let pbkdf2iterations = 10000;
+    let passphrasebytes = new TextEncoder().encode(fileInfo.password);
+    let pbkdf2salt = cipherbytes.slice(10, 18);
+
+    let passphrasekey = await window.crypto.subtle.importKey(
+        'raw',
+        passphrasebytes,
+        {
+            name: 'PBKDF2'
+        },
+        false,
+        ['deriveBits']
+    ).catch(function (err) {
+        console.error(err);
+    });
+
+    let pbkdf2bytes = await window.crypto.subtle.deriveBits(
+        {
+            "name": 'PBKDF2',
+            "salt": pbkdf2salt,
+            "iterations": pbkdf2iterations,
+            "hash": 'SHA-256'
+        },
+        passphrasekey,
+        384
+    ).catch(function (err) {
+        console.error(err);
+    });
+
+    pbkdf2bytes = new Uint8Array(pbkdf2bytes);
+    let keybytes = pbkdf2bytes.slice(0, 32);
+    let ivbytes = pbkdf2bytes.slice(32);
+    cipherbytes = cipherbytes.slice(18);
+
+    let key = await window.crypto.subtle.importKey('raw', keybytes, {
+        name: 'AES-CBC',
+        length: 256
+    }, false, ['decrypt'])
+        .catch(function (err) {
+            console.error(err);
+        });
+
+    let plaintextbytes = await window.crypto.subtle.decrypt({
+        name: "AES-CBC",
+        iv: ivbytes
+    }, key, cipherbytes)
+        .catch(function (err) {
+            console.error(err);
+        });
+
+    plaintextbytes = new Uint8Array(plaintextbytes);
+
+    return new Blob([plaintextbytes], {type: fileInfo.media_type});
+}
+
 export async function getAllFiles() {
     const files: IFileOnStore[] | null = await localforage.getItem(KEY_FILE);
     if (files) {
@@ -227,7 +291,7 @@ export async function getFileByID(id) {
     const files = await getAllFiles();
 
     for (let i = 0; i < files.length; i++) {
-        if (files[i].id === id ) {
+        if (files[i].id === id) {
             return files[i];
         }
     }
@@ -239,7 +303,7 @@ export async function getFileByBlobID(blobId) {
     const files = await getAllFiles();
 
     for (let i = 0; i < files.length; i++) {
-        if (files[i].blobId === blobId ) {
+        if (files[i].blobId === blobId) {
             return files[i];
         }
     }
@@ -288,7 +352,7 @@ export async function removeFileStore(fileInfo: IFileOnStore) {
     const files = await getAllFiles();
 
     for (let i = 0; i < files.length; i++) {
-        if (files[i].id === fileInfo.id ) {
+        if (files[i].id === fileInfo.id) {
             files.splice(i, 1);
             break;
         }
@@ -302,7 +366,7 @@ export async function updateFileStore(fileInfo: IFileOnStore) {
     const files = await getAllFiles();
 
     for (let i = 0; i < files.length; i++) {
-        if (files[i].id === fileInfo.id ) {
+        if (files[i].id === fileInfo.id) {
             // files.splice(i, 1);
             files[i] = fileInfo
             break;

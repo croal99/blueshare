@@ -16,6 +16,8 @@ import {humanFileSize} from "@/utils/formatSize.ts";
 import toast from "react-hot-toast";
 import Detail from "@components/explorer/detail.tsx";
 import Share from "@components/explorer/share.tsx";
+import {WalletSelector} from "@aptos-labs/wallet-adapter-ant-design";
+import "@aptos-labs/wallet-adapter-ant-design/dist/index.css";
 
 export default function Explorer() {
     const [fileList, setFileList] = useState<IFileOnStore[]>([]);
@@ -45,6 +47,8 @@ export default function Explorer() {
                         <UploadFile
                             onUpload={fetchData}
                         />
+
+                        <WalletSelector />
                     </div>
                     <Card style={{background: 'var(--gray-a6)'}}>
                         <Table.Root>
@@ -110,11 +114,13 @@ export default function Explorer() {
                                                 </Dialog.Root>
 
                                                 <Detail
-                                                    walrusFile={item}
+                                                    shareFile={item}
                                                 />
 
                                                 <Share
-                                                    />
+                                                    shareFile={item}
+                                                    onChange={fetchData}
+                                                />
                                             </Flex>
 
 
